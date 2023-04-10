@@ -10,4 +10,6 @@ npm install react-router-dom
 #cai dat react router
 
 #cai dat ckEditor
-npm install --save @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic
+npm install --save @ckeditor/ckeditor5-react @ckeditor/ckeditor5-build-classic @ckeditor/ckeditor5-autoheight
+
+#cai dat react-icons
