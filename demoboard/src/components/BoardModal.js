@@ -1,6 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { GrClose } from "react-icons/gr";
 import axios from "axios";
+import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ConfirmAlert from "./ConfirmAlert";
 
 const BoardModal = ({ onClose, id }) => {
   const [title, setTitle] = useState("");
@@ -10,6 +13,7 @@ const BoardModal = ({ onClose, id }) => {
   const handleModalClose = () => {
     onClose();
   };
+
   const handleDelete = async () => {
     try {
       const respone = await axios.delete(
@@ -56,6 +60,11 @@ const BoardModal = ({ onClose, id }) => {
     }
   };
 
+  const handleEditorChange = (event, editor) => {
+    const content = editor.getData();
+    setContent(content);
+  };
+
   useEffect(() => {
     if (id !== 0) {
       handleSearch();
@@ -65,13 +74,9 @@ const BoardModal = ({ onClose, id }) => {
   return (
     <div>
       {/* Main modal */}
-      <div
-        id="staticModal"
-        data-modal-backdrop="static"
-        aria-hidden="true"
-        className="fixed top-0 left-0 right-0 z-50 w-full p-14 overflow-x-hidden overflow-y-auto"
-      >
-        <div className="relative w-full h-full max-w-3xl mx-auto">
+      <div className="fixed top-0 left-0 right-0 bottom-0 z-50 w-full p-14 overflow-x-hidden overflow-y-auto">
+        <div className="absolute top-0 left-0 right-0 bottom-0 bg-gray-300 opacity-60"></div>
+        <div className="relative w-full h-full max-w-3xl mx-auto z-50 flex items-center justify-end">
           {/* Modal content */}
           <div className="relative bg-white rounded-lg shadow">
             {/* Modal header */}
@@ -110,7 +115,7 @@ const BoardModal = ({ onClose, id }) => {
                       onChange={(e) => setTitle(e.target.value)}
                     ></input>
                   </div>
-                  <div className="h-[350px]">
+                  <div className="">
                     <label
                       htmlFor="content"
                       className="block mb-2 text-sm font-medium text-gray-900"
@@ -118,15 +123,11 @@ const BoardModal = ({ onClose, id }) => {
                       Content
                     </label>
                     <div>
-                      <textarea
-                        name=""
-                        id=""
-                        cols="100"
-                        rows="15"
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        value={content}
-                        onChange={(e) => setContent(e.target.value)}
-                      ></textarea>
+                      <CKEditor
+                        editor={ClassicEditor}
+                        data={content}
+                        onChange={handleEditorChange}
+                      />
                     </div>
                   </div>
                 </form>
